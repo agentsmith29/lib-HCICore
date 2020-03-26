@@ -6,6 +6,9 @@
 #ifndef HCICORE_GAPSPECIFICATION_H
 #define HCICORE_GAPSPECIFICATION_H
 
+
+
+
 // From https://www.bluetooth.com/specifications/assigned-numbers/generic-access-profile/
 static constexpr uint8_t FLAGS = 0x01;
 static constexpr uint8_t INCOMPLETE_LIST_OF_16_BIT_SERVICE_CLASS_UUIDS = 0x02;

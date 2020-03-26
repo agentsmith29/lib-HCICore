@@ -9,7 +9,7 @@
 #include <sstream>
 #include <vector>
 #include <array>
-#include "BDAddress.h"
+#include "../BDAddress.h"
 
 
 // From BLUETOOTH CORE SPECIFICATION Version 5.2 | Vol 4, Part E
@@ -74,73 +74,6 @@ private:
     uint8_t _subevent_code;
 };
 
-class HCI_LE_ConnectionComplete: LEMetaEvent {
-   // See BLUETOOTH CORE SPECIFICATION Version 5.2 | Vol 4, Part E
-   // 7.7.65.2 LE Advertising Report event
-   // S. 2382f. 26.02.2020
-public:
-    HCI_LE_ConnectionComplete(unsigned char buf[260], int buf_len);
-
-    std::string eventTypeDescription();
-
-    // Return the Name (if found) of the current report
-    std::string address();
-
-    // Return the Name (if found) of the current report
-    std::string name();
-
-
-    int& operator[](int);
-
-private:
-
-
-
-
-
-
-
-
-    void parseData(std::vector<uint8_t> &data_holder);
-
-    void parseNameComplete(std::vector<uint8_t> &data_holder);
-
-    void parseFlags(std::vector<uint8_t> &data_holder);
-
-    void parseUUID(std::vector<uint8_t> &data_holder);
-
-
-    // SUBEVENT CODE
-    int assignSubeventCode(uint8_t &buf);
-    std::pair<uint8_t, std::string> _subevent_code;
-
-    // NUMBER OF REPORTS
-    int assignTotalNumberOfReports(uint8_t &buf);
-    int _num_reports = 0;
-
-    ///
-    /// \param buf
-    /// \return
-    int assignEventTypes(uint8_t *buf);
-    std::vector<std::pair<uint8_t, std::string>> _event_type;                  // Array
-
-    /// Assigns the address and the type to the vector _bd_address
-    /// \param buf
-    /// \return
-    int assignAddress(uint8_t *buf);
-    std::vector<BDAddress> _bd_address;                 // array, TODO
-    std::vector<uint8_t> _address_type;                // Array, TODO: REMOVE!
-    std::vector<std::array<uint8_t , 6>> _address;     // Array, TODO: REMOVE!
-
-
-    std::vector<int> _data_length;                     // Array
-
-    std::vector<std::vector<uint8_t>> _data;           // Array
-
-    std::vector<uint8_t> _rssi;                        // Array
-
-
-};
 
 
 #endif //HCICORE_LEMETAEVENT_H
