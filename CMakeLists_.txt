@@ -1,0 +1,271 @@
+cmake_minimum_required(VERSION 3.15)
+project(hcicore)
+
+set(CMAKE_CXX_STANDARD 98)
+
+#include_directories(bluez/lib)
+#include_directories(bluez/ell)
+#include_directories(bluez)
+include_directories(/usr/include/glib-2.0)
+include_directories(/usr/lib/x86_64-linux-gnu/glib-2.0/include)
+include_directories(/usr/lib/dbus-1.0/)
+include_directories(/usr/include/dbus-1.0/)
+include_directories(/usr/lib/dbus-1.0/include)
+
+include_directories(/usr/lib/)
+include_directories(/usr/include/dbus-1.0/)
+include_directories(/usr/lib/x86_64-linux-gnu/dbus-1.0/include)
+include_directories(/usr/include/glib-2.0)
+include_directories(/usr/lib/x86_64-linux-gnu/glib-2.0/include/)
+
+
+add_definitions(-DHAVE_CONFIG_H)
+set(LIB_SRC
+        bluez/lib/bluetooth.c
+        bluez/lib/bluetooth.h
+        bluez/lib/hci.c
+        bluez/lib/bluetooth.h
+        bluez/lib/sdp.c
+        bluez/lib/bluetooth.h)
+
+set(extra_header_src_files
+        lib/uuid.c
+        lib/bluetooth.h
+        lib/hci.h
+        libhci_lib.h
+        lib/sco.h
+        lib/l2cap.h
+        lib/sdp.h
+        lib/sdp_lib.h
+        lib/rfcomm.h
+        lib/bnep.h
+        lib/cmtp.h
+        lib/hidp.h)
+
+set(gdbus_libgdbus_internal_la_SOURCES
+        gdbus/gdbus.h
+        gdbus/mainloop.c
+        gdbus/watch.c
+        gdbus/object.c
+        gdbus/client.c
+        gdbus/polkit.c)
+
+
+
+set(src_libshared_glib_la_SOURCES
+        ${shared_sources}
+        bluez/src/shared/io-glib.c
+        bluez/src/shared/mainloop-glib.c
+        bluez/src/shared/mainloop-notify.h
+        bluez/src/shared/timeout-glib.c
+        )
+
+set(src_libshared_mainloop_la_SOURCES
+        ${shared_sources}
+        bluez/src/shared/io-mainloop.c
+        bluez/src/shared/timeout-mainloop.c
+        bluez/src/shared/mainloop.h src/shared/mainloop.c
+        bluez/src/shared/mainloop-notify.h
+        bluez/src/shared/mainloop-notify.c)
+
+set(attrib_sources
+        bluez/attrib/att.h
+        bluez/attrib/att-database.h
+        bluez/attrib/att.c
+        bluez/attrib/gatt.h
+        bluez/attrib/gatt.c
+        bluez/attrib/gattrib.h
+        bluez/attrib/gattrib.c
+        bluez/attrib/gatt-service.h
+        bluez/attrib/gatt-service.c)
+
+set(btio_sources
+        bluez/btio/btio.h
+        bluez/btio/btio.c)
+
+set(gobex_sources
+        bluez/gobex/gobex.h
+        bluez/gobex/gobex.c
+        bluez/gobex/gobex-defs.h
+        bluez/gobex/gobex-defs.c
+        bluez/gobex/gobex-packet.c
+        bluez/gobex/gobex-packet.h
+        bluez/gobex/gobex-header.c
+        bluez/gobex/gobex-header.h
+        bluez/gobex/gobex-transfer.c
+        bluez/gobex/gobex-debug.h
+        bluez/gobex/gobex-apparam.c
+        bluez/gobex/gobex-apparam.h)
+
+set(src_bluetoothd_SOURCES
+        ${builtin_sources}
+        ${attrib_sources}
+        ${btio_sources}
+        bluez/src/bluetooth.ver
+        bluez/src/main.c
+        bluez/src/log.h src/log.c
+        bluez/src/backtrace.h
+        bluez/src/backtrace.c
+        bluez/src/rfkill.c
+        bluez/src/hcid.h
+        bluez/src/sdpd.h
+        bluez/src/sdpd-server.c
+        bluez/src/sdpd-request.c
+        bluez/src/sdpd-service.c
+        bluez/src/sdpd-database.c
+        bluez/src/attrib-server.h
+        bluez/src/attrib-server.c
+        bluez/src/gatt-database.h
+        bluez/src/gatt-database.c
+        bluez/src/sdp-xml.h
+        bluez/src/sdp-xml.c
+        bluez/src/sdp-client.h
+        bluez/src/sdp-client.c
+        bluez/src/textfile.h
+        bluez/src/textfile.c
+        bluez/src/uuid-helper.h
+        bluez/src/uuid-helper.c
+        bluez/src/uinput.h
+        bluez/src/plugin.h
+        bluez/src/plugin.c
+        bluez/src/storage.h
+        bluez/src/storage.c
+        bluez/src/advertising.h
+        bluez/src/advertising.c
+        bluez/src/agent.h
+        bluez/src/agent.c
+        bluez/src/error.h
+        bluez/src/error.c
+        bluez/src/adapter.h
+        bluez/src/adapter.c
+        bluez/src/profile.h
+        bluez/src/profile.c
+        bluez/src/service.h
+        bluez/src/service.c
+        bluez/src/gatt-client.h
+        bluez/src/gatt-client.c
+        bluez/src/device.h
+        bluez/src/device.c
+        bluez/src/dbus-common.c
+        bluez/src/dbus-common.h
+        bluez/src/eir.h
+        bluez/src/eir.c)
+
+
+
+
+
+
+#======================================================================================================================#
+
+
+
+set(SRC_SHARED_SOURCES
+        #bluez/src/shared/ad.c #???
+        #bluez/src/shared/ad.h #???
+        bluez/src/shared/att-types.h
+        #bluez/src/shared/att.c #???
+        #bluez/src/shared/att.h #???
+        #bluez/src/shared/btp.c
+        #bluez/src/shared/btp.h
+        #bluez/src/shared/btsnoop.c
+        #bluez/src/shared/btsnoop.h
+        #bluez/src/shared/crypto.c #???
+        #bluez/src/shared/crypto.h #???
+        #bluez/src/shared/ecc.c #???
+        #bluez/src/shared/ecc.h #???
+        #bluez/src/shared/gap.c #???
+        #bluez/src/shared/gap.h #???
+        #bluez/src/shared/gatt-client.c #???
+        #bluez/src/shared/gatt-client.h #???
+        #bluez/src/shared/gatt-db.c #???
+        #bluez/src/shared/gatt-db.h #???
+        #bluez/src/shared/gatt-helpers.c #???
+        #bluez/src/shared/gatt-helpers.h #???
+        #bluez/src/shared/gatt-server.c #???
+        #bluez/src/shared/gatt-server.h #???
+        #bluez/src/shared/hci-crypto.c #???
+        #bluez/src/shared/hci-crypto.h #???
+        bluez/src/shared/hci.c
+        bluez/src/shared/hci.h
+        #bluez/src/shared/hfp.c #???
+        #bluez/src/shared/hfp.h #???
+        #bluez/src/shared/io-ell.c
+        bluez/src/shared/io-glib.c
+        #bluez/src/shared/io-mainloop.c
+        bluez/src/shared/io.h
+        #bluez/src/shared/log.c
+        #bluez/src/shared/log.h
+        #bluez/src/shared/mainloop-ell.c
+        #bluez/src/shared/mainloop-glib.c
+        #bluez/src/shared/mainloop-notify.c
+        #bluez/src/shared/mainloop-notify.h
+        bluez/src/shared/mainloop.c
+        bluez/src/shared/mainloop.h
+        #bluez/src/shared/mgmt.c #???
+        #bluez/src/shared/mgmt.h #???
+        #bluez/src/shared/pcap.c #???
+        #bluez/src/shared/pcap.h #???
+        bluez/src/shared/queue.c
+        bluez/src/shared/queue.h
+        #bluez/src/shared/ringbuf.c #???
+        #bluez/src/shared/ringbuf.h #???
+        bluez/src/shared/shell.c
+        bluez/src/shared/shell.h
+        #bluez/src/shared/tester.c #???
+        #bluez/src/shared/tester.h #???
+        #bluez/src/shared/timeout-ell.c
+        #bluez/src/shared/timeout-glib.c
+        bluez/src/shared/timeout-mainloop.c
+        bluez/src/shared/timeout.h
+        #bluez/src/shared/tty.h #???
+        #bluez/src/shared/uhid.c #???
+        #bluez/src/shared/uhid.h #???
+        bluez/src/shared/util.c
+        bluez/src/shared/util.h
+        )
+
+
+set(GDBUS_SORUCES
+        bluez/gdbus/client.c
+        bluez/gdbus/gdbus.h
+        bluez/gdbus/mainloop.c
+        bluez/gdbus/object.c
+        bluez/gdbus/polkit.c
+        bluez/gdbus/watch.c
+        )
+
+find_library(LIB_DBUS_1 dbus-1 REQUIRED)
+find_library(LIB_READLINE readline REQUIRED)
+
+find_package(PkgConfig REQUIRED)
+pkg_search_module(GLIB REQUIRED glib-2.0)
+
+
+include_directories(bluez)
+
+add_executable(hcicore
+        bluez/config.h
+        bluez/client/main.c
+        bluez/client/gatt.c
+        bluez/client/gatt.h
+        bluez/client/display.c
+        bluez/client/display.h
+        bluez/client/agent.c
+        bluez/client/agent.h
+        bluez/client/advertising.c
+        bluez/client/advertising.h
+        ${SRC_SHARED_SOURCES}
+        ${GDBUS_SORUCES}
+        )
+
+target_include_directories(hcicore PRIVATE ${GLIB_INCLUDE_DIRS})
+target_link_libraries(hcicore ${GLIB_LDFLAGS} ${LIB_DBUS_1} ${LIB_READLINE})
+
+
+#add_executable(hcicore
+#        src/BLEScan.cpp
+#        include/BLEScan.h
+#        main.cpp)
+#
+#

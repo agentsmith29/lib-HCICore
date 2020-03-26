@@ -1,0 +1,14 @@
+//
+// Created by root on 25.03.20.
+//
+
+#ifndef HCICORE_HCI_LE_ADVERTISINGREPORTEVENT_H
+#define HCICORE_HCI_LE_ADVERTISINGREPORTEVENT_H
+
+
+class HCI_LE_AdvertisingReportEvent {
+
+};
+
+
+#endif //HCICORE_HCI_LE_ADVERTISINGREPORTEVENT_H

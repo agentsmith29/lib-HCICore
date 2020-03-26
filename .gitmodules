@@ -1,0 +1,6 @@
+[submodule "bluez"]
+	path = bluez
+	url = https://git.kernel.org/pub/scm/bluetooth/bluez.git
+[submodule "spdlog"]
+	path = spdlog
+	url = https://github.com/gabime/spdlog.git
