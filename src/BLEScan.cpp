@@ -107,9 +107,6 @@ void BLEScan::sigint_handler(int sig)
     signal_received = sig;
 }
 
-void BLEScan::ouch(int sig) {
-    signal_received = sig;
-}
 
 int BLEScan::print_advertising_devices(int dd, uint8_t filter_type)
 {
@@ -118,12 +115,6 @@ int BLEScan::print_advertising_devices(int dd, uint8_t filter_type)
     struct sigaction sa;
     socklen_t olen;
     int len;
-
-    struct sigaction act;
-    act.sa_handler = ouch;
-    sigemptyset(&act.sa_mask);
-    act.sa_flags = 0;
-    sigaction(SIGSEGV, &act, 0);
 
     olen = sizeof(of);
     if (getsockopt(dd, SOL_HCI, HCI_FILTER, &of, &olen) < 0) {
@@ -156,6 +147,9 @@ int BLEScan::print_advertising_devices(int dd, uint8_t filter_type)
         evt_le_meta_event *meta;
         le_advertising_info *info;
         char addr[18];
+
+        if (signal_received == SIGHUP)
+            break;
 
         while ((len = read(dd, buf, sizeof(buf))) < 0) {
             if (errno == EINTR && signal_received == SIGINT) {
@@ -226,10 +220,6 @@ int BLEScan::print_advertising_devices(int dd, uint8_t filter_type)
             _logger->info("Got event code {0}. Exiting.", ptr[0]);
         }
 
-
-        //ptr = buf + (1 + HCI_EVENT_HDR_SIZE);
-        //len -= (1 + HCI_EVENT_HDR_SIZE);
-
          meta = (evt_le_meta_event *) ptr;
          // printf("%s %s\n", ptr);
 
@@ -243,20 +233,6 @@ int BLEScan::print_advertising_devices(int dd, uint8_t filter_type)
             return 0;
         }
 
-        /*
-        // Ignoring multiple reports //
-        info = (le_advertising_info *) (meta->data + 1);
-        //if (check_report_filter(filter_type, info)) {
-            //char name[30];
-
-            //memset(name, 0, sizeof(name));
-
-            ba2str(&info->bdaddr, addr);
-
-        _logger->info("ADDR: {0}", addr);
-        //}
-        //break;
-         */
     }
 
     return 0;
